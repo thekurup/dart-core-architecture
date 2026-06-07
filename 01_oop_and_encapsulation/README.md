@@ -4,7 +4,7 @@ This module demonstrates advanced encapsulation, intra-library state distributio
 
 ---
 
-## 👶 Beginner-Friendly Summary (ലളിതമായി പറഞ്ഞാൽ)
+## Summary 
 
 If you are new to Dart, here is a simple breakdown of what this project does:
 1. **Security (`_` Private Variable):** We made the bank balance private (`_accountbalance`). This means no one can accidentally change the balance from outside without typing a valid amount.
