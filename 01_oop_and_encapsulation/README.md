@@ -1,10 +1,10 @@
 # 01. OOP & Encapsulation (Advanced Bank Management)
 
-This project shows how to use Encapsulation and multi-file code splitting using `part` and `part of` in Dart.
+This module demonstrates advanced encapsulation, intra-library state distribution using `part`/`part of`, and strict domain boundary validation in Dart.
 
 ---
 
-## Summary 
+## 👶 Beginner-Friendly Summary (ലളിതമായി പറഞ്ഞാൽ)
 
 If you are new to Dart, here is a simple breakdown of what this project does:
 1. **Security (`_` Private Variable):** We made the bank balance private (`_accountbalance`). This means no one can accidentally change the balance from outside without typing a valid amount.
@@ -15,20 +15,21 @@ If you are new to Dart, here is a simple breakdown of what this project does:
 
 ## 🛠️ Data Integrity & Encapsulation Mechanisms
 
-### 1. Keeping the Balance Safe (Encapsulation)
-The `_accountbalance` field is made private. The system stops anyone from changing the balance directly from outside.
-* **Read Balance:** Anyone can see the balance, but they cannot rewrite it directly.
-* **Change Balance:** If we want to add a withdraw feature later, we will write a separate function with safety checks (like checking if there is enough money in the account).
+### 1. Controlled Mutation Paths
+The `_accountbalance` field is strictly encapsulated. The system prevents direct external modification, ensuring that state changes can only happen through authorised business logic.
 
-### 2. Checking Inputs Early (Null-Safety)
-User input can sometimes be wrong or empty. We check and validate the input **before** making any changes to the account:
+* **Read Access:** The getter exposes a **read snapshot** without granting write access.
+* **Write Access:** Regulated via dedicated setters. Extending this module with withdrawals would add a dedicated debit path with its own guards (e.g., insufficient-funds check against `_accountbalance`). The encapsulation model constrains *where* that logic must live.
+
+### 2. Null-Safety at the System Edge
+User input is the highest-entropy layer in any mobile application. Parsing and null-handling occur **before** domain mutation to ensure data safety:
 
 ```dart
 var input = stdin.readLineSync()?.trim();
 final amount = double.tryParse(input);
 
 if (amount == null) { 
-  /* Reject immediately if it is not a valid number */ 
+  /* Reject immediately at the boundary */ 
 }
 
-account.balance = amount;  // Only valid numbers are sent to the account
+account.balance = amount;  // Domain receives ONLY validated numerics
